@@ -1,0 +1,104 @@
+name: "ZAP Full Scan CI workflow"
+
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+      - cron:  '0 0 1 * *' ##execution of a task in the first minute of the month 
+
+
+jobs:
+
+# https://github.com/marketplace/actions/owasp-zap-full-scan
+ ubuntu-latest-zap-full-basic-job:
+    name: "basic -The OWASP ZAP Full Scan to perform Dynamic Application Security Testing (DAST) ubuntu latest"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "ZAP Full Scan"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+        # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'http://testphp.vulnweb.com'    
+
+# https://github.com/marketplace/actions/owasp-zap-full-scan
+ ubuntu-latest-zap-full-advanced-job:
+    name: "advanced - The OWASP ZAP Full Scan to perform Dynamic Application Security Testing (DAST) ubuntu latest"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "ZAP Full Scan http://testphp.vulnweb.com"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'http://testphp.vulnweb.com'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+      - name: "ZAP Full Scan http://demo.testfire.net/"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'http://demo.testfire.net/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'          
+      - name: "ZAP Full Scan https://dvwa.co.uk/"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'https://dvwa.co.uk/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+      - name: "ZAP Full Scan https://ctflearn.com/"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'https://ctflearn.com/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'          
+      - name: "ZAP Full Scan https://ctflearn.com/"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'https://ctflearn.com/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a' 
+      - name: "ZAP Full Scan https://www.gameofhacks.com/"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'https://www.gameofhacks.com/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'           
+      - name: "ZAP Full Scan https://public-firing-range.appspot.com/"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'https://public-firing-range.appspot.com/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+      - name: "ZAP Full Scan http://google-gruyere.appspot.com/"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'http://google-gruyere.appspot.com/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+
+
+
