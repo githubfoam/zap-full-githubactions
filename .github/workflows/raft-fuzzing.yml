@@ -1,0 +1,41 @@
+name: "RAFT fuzzing CI workflow"
+
+
+on:
+  push:
+    branches: [ test ]
+  schedule:
+      - cron:  '0 0 1 * *' ##execution of a task in the first minute of the month 
+
+
+jobs:
+
+# https://github.com/marketplace/actions/rest-api-fuzz-testing-raft-action
+ ubuntu-latest-raft-job:
+    name: "RAFT fuzzing"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: "os fingerprinting"
+      run: hostnamectl status 
+    # Run the raft command to fuzz locally
+    - name: "Run RAFT"
+      uses: mgreisen/raft-action@v3.1
+      with:
+        # Mode tells the action we want to run using our raft local script
+        mode: local
+
+        # The raft cli command arguments. 
+        # In this example the URL is kept in a secret because this is a public repo.
+        # In this example the URL points to a logic app which creates a github issue.
+        # You can use any URL that accepts a POST method to process the webhook. 
+        arguments: 'job create --file raft-fuzz/run.json --bugFoundWebhookUrl ${{ secrets.BUG_FOUND_URL }}'      
+        # Save the local logs into the pipeline artifacts for
+        # access to raw bug buckets and postman collections.
+        #  use the upload-artifact action to save the logs when RAFT is run locally
+        # If logDirectory is not specified the directory .raft will be used
+    - name: "Archive logs"
+      uses: actions/upload-artifact@v2
+      with: 
+            name: tool-logs
+            path: .raft        
