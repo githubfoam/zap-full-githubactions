@@ -43,6 +43,21 @@ jobs:
       run: | 
           docker run -i owasp/zap2docker-stable zap-cli quick-scan --self-contained \
             --start-options '-config api.disablekey=true' http://testphp.vulnweb.com  
+    - name: "ZAPR - ruby script for ZAP "
+      run: | 
+            docker run -u zap -i owasp/zap2docker-stable zapr \
+            --debug --summary http://testphp.vulnweb.com
+    - name: "Accessing the API from outside of the Docker container "
+      run: |
+            # Run ZAP as a daemon listening on “0.0.0.0” 
+            docker run -p 8090:8090 -i owasp/zap2docker-stable zap.sh \
+            -daemon -port 8090 -host 0.0.0.0          
+            # Find out the container id
+            docker ps
+            # Find out which address has been assigned to it
+            # point your browser at the specified host/port and access the ZAP API
+            # eg http://172.17.0.8:8090/
+            # docker inspect <CONTAINER ID> | grep IPAddress
     - name: "Scanning an app running on the host OS"
       run: |
           # https://hub.docker.com/r/vulnerables/web-dvwa
