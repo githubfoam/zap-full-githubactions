@@ -110,4 +110,12 @@ jobs:
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
 
-
+      - name: "http://www.hackthissite.org ZAP Full Scan"
+        uses: zaproxy/action-full-scan@v0.3.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # https://github.com/OWASP/OWASP-VWAD/blob/master/src/data/online.json
+          target: 'http://www.hackthissite.org'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
